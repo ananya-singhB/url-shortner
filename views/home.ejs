@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>URL Shortner</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="header">
+      <h1>URL Shortner</h1>
+      <div>
+        <% if (locals.error) { %>
+        <div class="error-container" id="errorBox">
+          <span class="error-message"><%= error %></span>
+          <button class="reset-btn" onclick="clearError()">×</button>
+        </div>
+        <% } %> <% if (locals.id) { %>
+        <div class="generated-url" id="generatedUrl">
+          <span>Short URL generated: http://localhost:8001/url/<%= id %></span>
+          <button class="message-reset-btn" onclick="clearMessage()">×</button>
+        </div>
+        <% } %>
+      </div>
+    </div>
+
+    <div class="form-div">
+      <form method="POST" action="/url">
+        <label>Enter your original URL:</label>
+        <input type="text" name="url" placeholder="https://example.com" />
+        <button type="submit">Generate Short ID</button>
+      </form>
+    </div>
+
+    <% if (locals.urls) { %>
+    <table>
+      <thead>
+        <tr>
+          <th>Redirect ID</th>
+          <th>Original URL</th>
+          <th>Visit counts</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% urls.map((url) => { %>
+        <tr>
+          <td>
+            <a href="http://localhost:8001/url/<%= url.shortId %>"
+              ><%= url.shortId %></a
+            >
+          </td>
+          <td><%= url.redirectURL %></td>
+          <td><%= url.visitHistory.length %> times</td>
+        </tr>
+        <% }) %>
+      </tbody>
+    </table>
+    <% } %>
+
+    <script>
+      function clearError() {
+        const errorBox = document.getElementById("errorBox")
+        if (errorBox) {
+          errorBox.style.display = "none"
+        }
+      }
+
+      function clearMessage() {
+        const generatedUrl = document.getElementById("generatedUrl")
+        if (generatedUrl) {
+          generatedUrl.style.display = "none"
+        }
+      }
+
+      window.addEventListener("DOMContentLoaded", () => {
+        setTimeout(() => {
+          clearError()
+          clearMessage()
+        }, 3000)
+      })
+    </script>
+  </body>
+</html>
