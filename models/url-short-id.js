@@ -4,12 +4,12 @@ const urlSchema = new mongoose.Schema(
   {
     shortId: {
       type: String,
-      require: true,
+      required: true,
       unique: true,
     },
     redirectURL: {
       type: String,
-      require: true,
+      required: true,
       unique: true,
     },
     visitHistory: [
@@ -19,6 +19,10 @@ const urlSchema = new mongoose.Schema(
         },
       },
     ],
+    createdBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "users",
+    },
   },
   { timestamps: true }
 )

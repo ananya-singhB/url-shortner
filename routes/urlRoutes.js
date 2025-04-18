@@ -1,15 +1,19 @@
 import express from "express"
 import {
+  getAllUrls,
   handleCreateShortURL,
-  handleGetAllUrls,
   handleGetShortURL,
 } from "../controller/idController.js"
 
 const router = express.Router()
 
-router.post("/", handleCreateShortURL)
+router.get("/", async(req, res) => {
+  const urls = await getAllUrls(req);
 
-router.get("/", handleGetAllUrls)
+  return res.render("home", {urls, viewOnly: true})
+})
+
+router.post("/", handleCreateShortURL)
 
 router.get("/:shortId", handleGetShortURL)
 
