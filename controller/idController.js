@@ -1,6 +1,5 @@
 import { nanoid } from "nanoid"
 import Url from "../models/url-short-id.js"
-import { PORT } from "../index.js"
 
 const isValidUrl = (url) => {
   try {
@@ -11,13 +10,13 @@ const isValidUrl = (url) => {
   }
 }
 
-const getAllUrls = async () => {
-  return await Url.find({})
+export const getAllUrls = async (req) => {
+  return await Url.find({ createdBy: req.user._id })
 }
 
 export const handleCreateShortURL = async (req, res) => {
   const { url } = req.body
-  const urls = await getAllUrls()
+  const urls = await getAllUrls(req)
 
   if (!url) {
     return res.status(400).render("home", { error: "Url is required.", urls })
@@ -36,10 +35,11 @@ export const handleCreateShortURL = async (req, res) => {
     shortId: shortId,
     redirectURL: url,
     visitHistory: [],
+    createdBy: req.user._id,
   })
     .then(async () => {
-      const urls = await getAllUrls()
-      return res.render("home", { id: shortId, urls })
+      const urls = await getAllUrls(req)
+      return res.render("home", { id: shortId, urls, viewOnly: true })
     })
     .catch((err) =>
       res.render("home", { error: err.errorResponse.errmsg, urls })
@@ -68,8 +68,8 @@ export const handleGetShortURL = async (req, res) => {
   return res.redirect(entry?.redirectURL)
 }
 
-export const handleGetAllUrls = async (_, res) => {
-  const urls = await getAllUrls()
+export const handleGetAllUrls = async (req, res) => {
+  const urls = await getAllUrls(req)
 
   return res.render("home", { urls })
 }

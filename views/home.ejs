@@ -24,6 +24,7 @@
       </div>
     </div>
 
+    <% if (!locals.viewOnly) { %>
     <div class="form-div">
       <form method="POST" action="/url">
         <label>Enter your original URL:</label>
@@ -31,8 +32,7 @@
         <button type="submit">Generate Short ID</button>
       </form>
     </div>
-
-    <% if (locals.urls) { %>
+    <% } %> <% if (locals.urls) { %>
     <table>
       <thead>
         <tr>
