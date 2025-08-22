@@ -1,4 +1,4 @@
-This is a simple URL shortening web application built using Express.js and EJS templates. It allows authenticated users to convert long URLs into shorter, shareable links and tracks visit counts for analytics.
+This is a simple URL shortening web application built using Node.js, Express.js and EJS templates. It allows authenticated users to convert long URLs into shorter, shareable links and tracks visit counts for analytics.
 
 **Start the Server**
 
